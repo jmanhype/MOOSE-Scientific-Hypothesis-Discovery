@@ -37,7 +37,7 @@ def main():
 
     # Save the compiled program
     try:
-        compiled_program_json = json.dumps(compiled_discovery.dump_state(save_field_meta=True), indent=2)
+        compiled_program_json = json.dumps(compiled_discovery.dump_state(), indent=2)
         with open("compiled_scientific_hypothesis_discovery.json", "w") as f:
             f.write(compiled_program_json)
         print("Program saved to compiled_scientific_hypothesis_discovery.json")
@@ -96,9 +96,7 @@ def main():
             except Exception as e:
                 logging.error(f"Error during prediction: {e}")
                 print("An error occurred while processing the observation. Please try again.")
-                print("
-" + "-"*50 + "
-")  # Add a separator between iterations
+                print("" + "-"*50 + "")  # Add a separator between iterations
     print("Thank you for using ScientificHypothesisDiscovery. Goodbye!")
 
 if __name__ == '__main__':

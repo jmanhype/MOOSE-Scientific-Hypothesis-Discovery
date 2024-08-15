@@ -8,23 +8,42 @@ from hypothesis_generator import HypothesisGenerator
 from pydub import AudioSegment
 from pydub.playback import play
 import io
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class ScientificHypothesisDiscovery(dspy.Module):
     def __init__(self, num_passages=5):
         super().__init__()
         self.query_jargon_dictionary = QueryScientificJargon()
+        
+        # Initialize LM
+        llm = dspy.OpenAI(model='gpt-3.5-turbo', api_key=os.getenv('OPENAI_API_KEY'))
+        dspy.settings.configure(lm=llm)
+        
+        # Initialize RM
+        try:
+            colbertv2_wiki17_abstracts = dspy.ColBERTv2(url='http://20.102.90.50:2017/wiki17_abstracts')
+            dspy.settings.configure(rm=colbertv2_wiki17_abstracts)
+            logging.info("Successfully configured ColBERTv2 retrieval model")
+        except Exception as e:
+            logging.error(f"Failed to configure ColBERTv2 retrieval model: {e}")
+            logging.warning("Falling back to default retrieval method")
+        
         self.retrieve = dspy.Retrieve(k=num_passages)
-        logging.info(f'Successfully initialized Retrieve module with k={num_passages}')
-        # Initialize these as None, they will be set later
-        self.identify_jargon = None
-        self.identify_context = None
+        logging.info(f"Successfully initialized Retrieve module with k={num_passages}")
+        
+        self.identify_jargon = dspy.Predict("observation -> jargon_terms")
+        self.identify_context = dspy.Predict("observation -> context")
         self.hypothesis_generator = HypothesisGenerator()
+        
         # Set up OpenAI client
-        openai.api_key = os.environ['OPENAI_API_KEY']
+        openai.api_key = os.getenv('OPENAI_API_KEY')
+        if not openai.api_key:
+            logging.warning('OPENAI_API_KEY not found in environment variables. Some features may not work.')
 
     def forward(self, observation):
-        if not all([self.identify_jargon, self.identify_context]):
-            raise ValueError('Not all required modules have been set.')
         try:
             jargon_terms = self.identify_jargon(observation=observation).jargon_terms.strip().split(',')
             jargon_terms = [term.strip() for term in jargon_terms if len(term.strip().split()) <= 3]  # Limit to terms with 3 words or less

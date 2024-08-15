@@ -1,0 +1,31 @@
+{
+  "retrieve": {
+    "k": 5
+  },
+  "identify_jargon": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature_instructions": "Given the fields `observation`, produce the fields `jargon_terms`.",
+    "signature_prefix": "Jargon Terms:"
+  },
+  "identify_context": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature_instructions": "Given the fields `observation`, produce the fields `context`.",
+    "signature_prefix": "Context:"
+  },
+  "hypothesis_generator.generate_hypothesis": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature_instructions": "Given the fields `observation`, `jargon_definitions`, `context`, `retrieved_passages`, produce the fields `reasoning`, `novel_hypothesis`.",
+    "signature_prefix": "Novel Hypothesis:",
+    "extended_signature_instructions": "Given the fields `observation`, `jargon_definitions`, `context`, `retrieved_passages`, produce the fields `reasoning`, `novel_hypothesis`.",
+    "extended_signature_prefix": "Novel Hypothesis:"
+  }
+}

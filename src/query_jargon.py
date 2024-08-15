@@ -19,7 +19,7 @@ class QueryScientificJargon(dspy.Module):
             'Marine biodiversity': 'The variety of life in marine ecosystems, including the diversity of plants, animals, and microorganisms.',
             'Overfishing': 'The removal of a species of fish from a body of water at a rate that the species cannot replenish, resulting in diminished fish populations.',
             'Climate change': 'Long-term shifts in temperatures and weather patterns, primarily caused by human activities.',
-            'Global warming': 'The long-term heating of Earth's surface observed since the pre-industrial period due to human activities.',
+            'Global warming': 'The long-term heating of Earths surface observed since the pre-industrial period due to human activities.',
         }
 
     async def forward(self, jargon_terms):
@@ -71,7 +71,7 @@ class QueryScientificJargon(dspy.Module):
         max_retries = 3
         for attempt in range(max_retries):
             try:
-                prompt = f'Provide a brief definition for the term '{term}' in the context of scientific research:'
+                prompt = f'Provide a brief definition for the term "{term}" in the context of scientific research:'
                 response = dspy.Predict('term -> definition')(term=prompt).definition
                 return response.strip()
             except Exception as e:
