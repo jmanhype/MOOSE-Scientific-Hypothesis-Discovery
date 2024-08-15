@@ -1,0 +1,10 @@
+dspy
+python-dotenv
+aiohttp
+cachetools
+backoff
+nest_asyncio
+sentence-transformers
+rouge
+openai
+pydub
