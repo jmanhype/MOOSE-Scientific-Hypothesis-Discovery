@@ -2,9 +2,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.env
-*.db
-*.sqlite3
-*.log
-*.json
-*.mp3
+.Python
+env/
+venv/
+ENV/
+env.bak/
